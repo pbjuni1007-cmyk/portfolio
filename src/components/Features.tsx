@@ -120,10 +120,10 @@ export default function Features() {
                     </div>
                   )}
                   <div className="p-5">
-                    <h4 className="text-sm font-bold syntax-keyword mb-2 font-mono">
+                    <h4 className="text-base font-bold syntax-keyword mb-2 font-mono">
                       {feature.title}
                     </h4>
-                    <p className="text-sm syntax-comment leading-relaxed">
+                    <p className="text-sm syntax-default leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
