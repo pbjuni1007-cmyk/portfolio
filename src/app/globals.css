@@ -1,26 +1,361 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* IntelliJ Darcula color scheme */
+  --color-editor: #2B2B2B;
+  --color-panel: #3C3F41;
+  --color-sidebar: #313335;
+  --color-tab-active: #4E5254;
+  --color-tab-inactive: #3C3F41;
+  --color-titlebar: #3C3F41;
+  --color-menubar: #3C3F41;
+  --color-border: #515151;
+  --color-selection: #214283;
+  --color-line-highlight: #323232;
+  --color-gutter: #313335;
+
+  /* Syntax highlighting */
+  --color-default: #A9B7C6;
+  --color-keyword: #CC7832;
+  --color-string: #6A8759;
+  --color-number: #6897BB;
+  --color-function: #FFC66D;
+  --color-annotation: #9876AA;
+  --color-comment: #808080;
+  --color-linenum: #606366;
+  --color-error: #BC3F3C;
+  --color-field: #9876AA;
+  --color-type: #A9B7C6;
+  --color-const: #9876AA;
+
+  /* Semantic aliases */
+  --color-background: #2B2B2B;
+  --color-foreground: #A9B7C6;
+  --color-muted: #808080;
+  --color-accent: #CC7832;
+  --color-accent2: #6897BB;
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  font-size: 18px; /* scale up all rem-based sizes ~12% */
+}
+
+* {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #1e1e1e;
+  color: var(--color-default);
+  overflow: hidden;
+}
+
+::selection {
+  background: var(--color-selection);
+  color: #fff;
+}
+
+/* Scrollbar - IntelliJ style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-editor);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(134, 134, 134, 0.3);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(134, 134, 134, 0.5);
+}
+
+/* --- IDE Frame --- */
+
+.ide-titlebar {
+  background: var(--color-titlebar);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-comment);
+  font-size: 13px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+.ide-menubar {
+  background: var(--color-menubar);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 13px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 2px;
+  user-select: none;
+}
+
+.ide-menu-item {
+  color: var(--color-default);
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: default;
+  transition: background 0.1s;
+}
+
+.ide-menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Tab bar */
+.ide-tabbar {
+  background: var(--color-panel);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ide-tabbar::-webkit-scrollbar {
+  display: none;
+}
+
+.ide-tab {
+  background: var(--color-tab-inactive);
+  border-right: 1px solid var(--color-border);
+  color: var(--color-comment);
+  padding: 6px 16px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.1s;
+  position: relative;
+}
+
+.ide-tab:hover {
+  background: var(--color-tab-active);
+  color: var(--color-default);
+}
+
+.ide-tab-active {
+  background: var(--color-editor);
+  color: var(--color-default);
+}
+
+.ide-tab-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-number);
+}
+
+/* Breadcrumb */
+.ide-breadcrumb {
+  background: var(--color-editor);
+  border-bottom: 1px solid rgba(81, 81, 81, 0.5);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--color-comment);
+  padding: 3px 12px 3px 60px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ide-breadcrumb span {
+  color: var(--color-linenum);
+}
+
+.ide-breadcrumb .current {
+  color: var(--color-default);
+}
+
+/* Editor area with gutter */
+.ide-editor {
+  background: var(--color-editor);
+  overflow-y: auto;
+  height: calc(100vh - 34px - 30px - 34px - 23px - 26px);
+  position: relative;
+}
+
+.ide-content {
+  padding: 16px 24px 80px 60px;
+  max-width: 860px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Line numbers gutter strip */
+.ide-gutter {
+  position: fixed;
+  left: 0;
+  width: 52px;
+  background: var(--color-gutter);
+  border-right: 1px solid var(--color-border);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Tool window bar (left side strip) */
+.ide-toolstrip {
+  background: var(--color-panel);
+  border-right: 1px solid var(--color-border);
+  width: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 4px;
+  gap: 2px;
+}
+
+.ide-toolstrip-btn {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--color-comment);
+  cursor: default;
+  border-radius: 3px;
+}
+
+.ide-toolstrip-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-default);
+}
+
+/* Status bar */
+.ide-statusbar {
+  background: var(--color-panel);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-comment);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+}
+
+.ide-statusbar-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* --- IDE panel card --- */
+.ide-panel {
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  transition: border-color 0.2s;
+}
+
+.ide-panel:hover {
+  border-color: var(--color-comment);
+}
+
+.ide-glow:hover {
+  box-shadow: 0 0 12px rgba(204, 120, 50, 0.08);
+}
+
+/* Syntax color utilities */
+.syntax-keyword { color: var(--color-keyword); }
+.syntax-string { color: var(--color-string); }
+.syntax-number { color: var(--color-number); }
+.syntax-function { color: var(--color-function); }
+.syntax-annotation { color: var(--color-annotation); }
+.syntax-comment { color: var(--color-comment); }
+.syntax-default { color: var(--color-default); }
+.syntax-field { color: var(--color-field); }
+.syntax-type { color: var(--color-type); }
+
+/* IDE link (like IntelliJ ctrl+click) */
+.ide-link {
+  color: var(--color-number);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.ide-link:hover {
+  color: var(--color-function);
+  text-decoration: underline;
+}
+
+/* Tag/badge - like IntelliJ labels */
+.ide-tag {
+  background: rgba(204, 120, 50, 0.12);
+  color: var(--color-keyword);
+  border: 1px solid rgba(204, 120, 50, 0.25);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+
+.ide-tag-green {
+  background: rgba(106, 135, 89, 0.12);
+  color: var(--color-string);
+  border: 1px solid rgba(106, 135, 89, 0.25);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+
+.ide-tag-blue {
+  background: rgba(104, 151, 187, 0.12);
+  color: var(--color-number);
+  border: 1px solid rgba(104, 151, 187, 0.25);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+
+.ide-tag-purple {
+  background: rgba(152, 118, 170, 0.12);
+  color: var(--color-annotation);
+  border: 1px solid rgba(152, 118, 170, 0.25);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+}
+
+/* Scroll progress - keyword orange */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--color-keyword);
+  transform-origin: left;
+  z-index: 200;
+}
+
+/* responsive: hide IDE chrome on very small screens */
+@media (max-width: 640px) {
+  .ide-toolstrip { display: none; }
+  .ide-breadcrumb { padding-left: 12px; }
+  .ide-content { padding-left: 16px; padding-right: 16px; }
+  .ide-gutter { display: none; }
 }
