@@ -4,6 +4,37 @@ import { motion } from 'framer-motion';
 
 const projects = [
   {
+    title: 'AI Sports Camera',
+    role: '1인 개발',
+    description:
+      '스포츠 영상에서 AI가 자동으로 베스트 프레임을 추출하는 Android 앱. ML 모델 통합부터 프로덕션 수준의 테스트·CI/CD까지 전체 라이프사이클을 1인으로 수행했습니다.',
+    tech: ['Kotlin', 'Jetpack Compose', 'CameraX', 'TensorFlow Lite', 'MediaPipe', 'Hilt', 'Room', 'Material3'],
+    highlights: [
+      'TFLite NIMA + MediaPipe Pose로 품질·동작·선명도 3축 종합 평가 파이프라인 구축',
+      'Strategy Pattern 기반 종목별 액션 감지 — OCP(개방-폐쇄 원칙) 실제 적용',
+      'NMS 알고리즘으로 시간적 다양성 보장하며 Top-K 베스트 프레임 자동 선별',
+      'NIMA 모델 미탑재 시 5요소 Fallback 스코어러 자동 전환 — graceful degradation 설계',
+      '130개 유닛 테스트 + GitHub Actions CI/CD + R8 최적화로 프로덕션 수준 코드 품질',
+    ],
+    github: 'https://github.com/pbjuni1007-cmyk/ai-sports-camera',
+  },
+  {
+    title: 'JunFlow',
+    role: '개인 프로젝트',
+    description:
+      'AI 에이전트를 오케스트레이션하는 개발자 워크플로우 CLI 도구. AI를 사용하는 것을 넘어, AI 도구를 직접 설계하고 npm에 배포했습니다.',
+    tech: ['TypeScript', 'Node.js', 'Zod', 'MCP', 'Claude API', 'npm'],
+    highlights: [
+      'Agent<TInput, TOutput> 제네릭 + Discriminated Union으로 타입 안전한 에이전트 시스템 설계',
+      'DAG 위상정렬(Kahn) + 순환감지(DFS)로 태스크 의존성 해결',
+      '멀티모델 라우팅 — 태스크 복잡도별 AI 모델 분리 배정 (비용 최적화)',
+      'Strategy + Factory + Template Method 패턴으로 3개 AI·3개 트래커 플러그인 확장',
+      'MCP 프로토콜 서버 직접 구현 + npm publish 배포',
+    ],
+    github: 'https://github.com/pbjuni1007-cmyk/junflow',
+    npm: 'https://www.npmjs.com/package/junflow',
+  },
+  {
     title: '골목식당',
     badge: '가제',
     role: '팀장 (6인)',

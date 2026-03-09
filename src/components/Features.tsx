@@ -15,6 +15,31 @@ interface ProjectFeatures {
 
 const projectFeatures: ProjectFeatures[] = [
   {
+    project: 'AI Sports Camera',
+    features: [
+      {
+        title: 'AI 기반 3축 프레임 평가',
+        description:
+          'NIMA(Neural Image Assessment) 모델로 미적 품질을, MediaPipe Pose로 스포츠 동작 의미를, Laplacian 분산으로 선명도를 각각 평가. 세 점수를 가중 합산하여 최적의 순간을 자동 선별. NIMA 미탑재 시 밝기·대비·채도·엣지밀도·색조화 5요소 Fallback 스코어러가 자동 활성화.',
+      },
+      {
+        title: '종목별 동작 인식 (Strategy Pattern)',
+        description:
+          '스포츠 종목마다 다른 "결정적 장면"을 감지하기 위해 Strategy Pattern 적용. 축구 모드에서는 발-공 관계(슈팅), 머리 높이(헤딩), 다리 교차(태클), 양팔 들기(세리머니)를 포즈 랜드마크 기하학으로 판별. 새 종목 추가 시 ActionDetector 수정 없이 Strategy만 추가.',
+      },
+      {
+        title: 'NMS 베스트 프레임 선택',
+        description:
+          '단순 Top-K가 아닌 Non-Maximum Suppression을 적용하여, 시간적으로 가까운 유사 프레임을 억제하고 다양한 시점의 베스트샷을 추출. 쿨다운 시간과 NMS 임계값은 사용자 설정으로 조절 가능.',
+      },
+      {
+        title: '실시간 촬영 + 영상 분석 이중 모드',
+        description:
+          'CameraX Preview + ImageAnalysis로 실시간 분석하며 임계값 초과 시 자동 캡처. 기록 영상 분석 모드에서는 VideoFrameExtractor로 프레임 추출 후 1280px 다운스케일링과 분석 후 즉시 Bitmap 해제로 메모리 관리.',
+      },
+    ],
+  },
+  {
     project: '골목식당',
     features: [
       {
