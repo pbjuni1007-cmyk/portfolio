@@ -131,11 +131,11 @@ export default function Features() {
                   className="ide-panel ide-glow rounded overflow-hidden transition-all duration-200"
                 >
                   {feature.image ? (
-                    <div className="w-full aspect-video" style={{ background: 'var(--color-sidebar)' }}>
+                    <div className="w-full p-6 flex items-center justify-center" style={{ background: 'var(--color-sidebar)' }}>
                       <img
                         src={feature.image}
                         alt={feature.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-auto max-h-[400px] object-contain"
                       />
                     </div>
                   ) : (
