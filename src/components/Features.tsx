@@ -21,6 +21,7 @@ const projectFeatures: ProjectFeatures[] = [
         title: 'AI 기반 3축 프레임 평가',
         description:
           'NIMA(Neural Image Assessment) 모델로 미적 품질을, MediaPipe Pose로 스포츠 동작 의미를, Laplacian 분산으로 선명도를 각각 평가. 세 점수를 가중 합산하여 최적의 순간을 자동 선별. NIMA 미탑재 시 밝기·대비·채도·엣지밀도·색조화 5요소 Fallback 스코어러가 자동 활성화.',
+        image: '/diagrams/aisports-pipeline.svg',
       },
       {
         title: '종목별 동작 인식 (Strategy Pattern)',
@@ -51,6 +52,7 @@ const projectFeatures: ProjectFeatures[] = [
         title: 'CI/CD 파이프라인',
         description:
           'Jenkins + Docker 기반 자동 배포 환경 구축. PR 머지 시 자동 빌드 → 테스트 → 배포까지 무중단 파이프라인 구성.',
+        image: '/diagrams/golmok-cicd.svg',
       },
       {
         title: '팀 운영 체계',
@@ -76,6 +78,7 @@ const projectFeatures: ProjectFeatures[] = [
         title: 'Kafka 이벤트 드리븐',
         description:
           '여행 정보 변경 시 Kafka를 통한 비동기 알림 처리. 서비스 간 결합도를 낮추고 확장 가능한 아키텍처 구현.',
+        image: '/diagrams/yeji-architecture.svg',
       },
     ],
   },
@@ -86,6 +89,7 @@ const projectFeatures: ProjectFeatures[] = [
         title: 'RESTful API 설계',
         description:
           '관광지 검색, 즐겨찾기, 리뷰 등 핵심 API를 설계하고 구현. Swagger로 문서화하여 프론트엔드와의 협업 효율 향상.',
+        image: '/diagrams/seoulmate-api.svg',
       },
       {
         title: '공공데이터 API 연동',
@@ -159,9 +163,6 @@ export default function Features() {
         ))}
       </div>
 
-      <p className="text-xs syntax-comment mt-6 text-center font-mono">
-        // TODO: 스크린샷 및 GIF 추가 예정
-      </p>
     </motion.section>
   );
 }
