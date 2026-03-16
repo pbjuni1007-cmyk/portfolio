@@ -68,9 +68,9 @@ const projectFeatures: ProjectFeatures[] = [
           'PostgreSQL JSONB vs MongoDB를 벤치마크 비교 후 JSONB 선택. 트랜잭션 안정성을 유지하면서 스키마리스 유연성 확보.',
       },
       {
-        title: 'MyBatis + JPA 하이브리드',
+        title: 'API 명세 기반 협업 프로세스',
         description:
-          '복잡한 조회는 MyBatis로, CRUD는 JPA로 처리하는 하이브리드 전략. 조회 성능과 개발 생산성을 동시에 확보.',
+          '프론트↔백엔드 간 API 명세서를 먼저 합의하고 개발하는 Contract-First 방식 도입. 인터페이스 불일치로 인한 재작업을 줄이고 병렬 개발 효율 향상.',
       },
       {
         title: 'Kafka 이벤트 드리븐',

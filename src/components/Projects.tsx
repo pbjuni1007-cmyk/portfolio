@@ -53,10 +53,10 @@ const projects = [
     role: 'BE 리드 (5인)',
     description:
       '여행 정보 공유 플랫폼. 백엔드 아키텍처를 설계하고 기술적 의사결정을 주도했습니다.',
-    tech: ['Java', 'Spring Boot', 'PostgreSQL JSONB', 'Kafka', 'MyBatis + JPA'],
+    tech: ['Java', 'Spring Boot', 'PostgreSQL JSONB', 'Kafka', 'JPA'],
     highlights: [
-      'PostgreSQL JSONB vs MongoDB 비교 후 JSONB 선택',
-      'MyBatis + JPA 하이브리드 전략으로 조회 성능과 생산성 동시 확보',
+      'PostgreSQL JSONB vs MongoDB 비교 후 JSONB 선택 — 트랜잭션 안정성과 스키마리스 유연성 동시 확보',
+      'Kafka 이벤트 드리븐 아키텍처로 서비스 간 결합도 최소화',
       '프론트↔백 API 명세서 기반 합의 프로세스 도입',
     ],
     github: '#',
