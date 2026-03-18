@@ -36,10 +36,12 @@ export default function Hero() {
       <div className="syntax-comment mb-4">
         <p>/**</p>
         <p>&nbsp;* 안녕하세요,</p>
-        <p>&nbsp;* 시스템의 흐름을 설계하는 백엔드 개발자입니다.</p>
+        <p>&nbsp;* 시스템의 흐름을 설계하고</p>
+        <p>&nbsp;* 기술 선택에 이유를 묻는</p>
+        <p>&nbsp;* 백엔드 개발자입니다.</p>
         <p>&nbsp;*</p>
         <p>&nbsp;* <span className="syntax-annotation">@author</span> 박병준</p>
-        <p>&nbsp;* <span className="syntax-annotation">@since</span> 2025</p>
+        <p>&nbsp;* <span className="syntax-annotation">@since</span> 1997.10.07</p>
         <p>&nbsp;*/</p>
       </div>
 

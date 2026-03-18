@@ -7,7 +7,6 @@ const tabs = [
   { id: 'about', label: 'About.md', icon: '📄' },
   { id: 'timeline', label: 'Experience.json', icon: '📋' },
   { id: 'projects', label: 'Projects.java', icon: '☕' },
-  { id: 'features', label: 'Features.ts', icon: '📦' },
   { id: 'skills', label: 'Skills.yml', icon: '⚙' },
   { id: 'contact', label: 'Contact.java', icon: '☕' },
 ];
@@ -21,7 +20,6 @@ const breadcrumbMap: Record<string, string[]> = {
   about: ['src', 'main', 'resources', 'About.md'],
   timeline: ['src', 'main', 'resources', 'Experience.json'],
   projects: ['src', 'main', 'java', 'dev.jun.portfolio', 'Projects.java'],
-  features: ['src', 'main', 'java', 'dev.jun.portfolio', 'Features.ts'],
   skills: ['src', 'main', 'resources', 'Skills.yml'],
   contact: ['src', 'main', 'java', 'dev.jun.portfolio', 'Contact.java'],
 };

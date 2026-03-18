@@ -13,39 +13,49 @@ const timeline: TimelineItem[] = [
   {
     period: '2016.03 - 2021.02',
     title: '서강대학교 철학과 / 신문방송학(복수전공) 졸업',
-    description: '논리적 사고와 올바른 질문을 던지는 훈련',
+    description: '논리적 사고와 올바른 질문을 던지는 훈련. 복잡한 문제를 구조화하는 능력의 기반',
   },
   {
     period: '2021.03 - 2023.06',
     title: '육군 11기동사단 복무 (공보정훈장교)',
-    description: '책임감과 리더십. 다수 수상',
+    description: '30인 이상 조직 관리 및 대외 커뮤니케이션 경험. 다수 수상으로 책임감과 리더십 입증',
   },
   {
     period: '2024.04 - 2025.04',
     title: '한국맥도날드 홍보팀 인턴',
-    description: '브랜드 커뮤니케이션과 소통의 본질을 경험',
+    description: '글로벌 기업의 브랜드 커뮤니케이션 실무. 데이터 기반 소통 전략 수립 경험',
   },
   {
     period: '2025.07 - 2026.06 (예정)',
-    title: 'SSAFY 14기',
-    description: 'Java · Spring Boot · 알고리즘 집중 교육',
+    title: 'SSAFY 14기 (삼성 청년 SW 아카데미)',
+    description: 'Java · Spring Boot · 알고리즘 집중 교육 (1,000시간+). 3개 팀 프로젝트에서 BE 리드 → 팀장으로 성장',
     children: [
       {
         period: '2025.11 - 2025.12',
         title: 'SeoulMate (2인 프로젝트)',
-        description: '첫 협업. API 개발 및 DB 설계 담당',
+        description: '첫 협업. API 설계 및 DB 설계 담당. 이후 v2, v3까지 기술 스택을 3번 전환하며 성장',
       },
       {
         period: '2026.01 - 2026.02',
         title: 'YEJI (5인 프로젝트)',
-        description: 'BE 리드. 기술 의사결정 주도 (PostgreSQL JSONB, Kafka)',
+        description: 'BE 개발. SSE 스트리밍 아키텍처 설계, Contract-First API 협업 프로세스 도입',
       },
       {
         period: '2026.02 - 2026.04',
         title: '골목식당 (6인 프로젝트, 가제)',
-        description: '팀장. AI 워크플로우 설계 및 팀 운영',
+        description: '팀장. FE 개발(백엔드 관점의 프론트 경험), Jenkins CI/CD 구축, MVP 기능 축소 전략 주도',
       },
     ],
+  },
+  {
+    period: '2026.03',
+    title: 'JunFlow (개인 프로젝트)',
+    description: 'AI 에이전트 오케스트레이션 CLI 도구 설계·구현·npm 배포. Strategy + Factory + Template Method 패턴 실전 적용',
+  },
+  {
+    period: '2026.03',
+    title: 'AI Sports Camera (개인 프로젝트)',
+    description: 'Android AI 앱 1인 전체 개발. TFLite + MediaPipe 파이프라인, 130개 테스트, GitHub Actions CI/CD',
   },
 ];
 
