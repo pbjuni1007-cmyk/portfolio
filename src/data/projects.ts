@@ -141,12 +141,12 @@ export const projects: ProjectData[] = [
     team: {
       total: 5,
       breakdown: 'FE 2 / BE 2 / AI·Infra 1',
-      myRole: 'BE 개발, 아키텍처 설계 참여',
+      myRole: 'Backend Lead, 아키텍처 설계 주도',
     },
-    contribution: '백엔드 아키텍처 설계 70%, API 설계 70%',
+    contribution: 'Backend Lead — 아키텍처 설계 주도, API 설계 70%',
     description:
       '동서양 통합 운세 플랫폼. 커스텀 파인튜닝 LLM(Qwen3 4B)이 사주·타로를 AI로 해석하고, 물리 엔진 기반 인터랙티브 카드 경험을 제공합니다.',
-    tech: ['Java 21', 'Spring Boot 3.4', 'Spring Security', 'JPA', 'PostgreSQL', 'Redis'],
+    tech: ['Java 21', 'Spring Boot 3.4', 'Spring Security', 'JPA', 'PostgreSQL', 'Redis', 'Kafka', 'Docker', 'Jenkins'],
     highlights: [
       'SSE 기반 AI 운세 실시간 스트리밍 응답 중계 아키텍처 설계',
       'Spring Security + JWT 인증/인가 체계 구현',

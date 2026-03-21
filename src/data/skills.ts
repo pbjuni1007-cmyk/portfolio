@@ -131,9 +131,9 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       {
         name: 'Kafka',
-        proficiency: 'exploring',
-        usage: '이벤트 드리븐 아키텍처 학습',
-        projects: [],
+        proficiency: 'familiar',
+        usage: 'YEJI 이벤트 기반 비동기 처리 도입 (AI API 응답 지연 해결)',
+        projects: ['yeji'],
       },
     ],
   },
