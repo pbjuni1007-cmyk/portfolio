@@ -66,7 +66,7 @@ export const projects: ProjectData[] = [
       breakdown: 'BE 3 / FE 2 / AI 1',
       myRole: '팀장, FE 개발, CI/CD 구축',
     },
-    contribution: '팀 운영 100%, FE 개발, CI/CD 100%',
+    contribution: '팀장, Frontend Lead',
     description:
       'AI 기반 영세 요식업 경영 솔루션. 팀장으로서 기술 의사결정과 팀 운영을 주도하면서, 백엔드 개발자로서 프론트엔드를 직접 경험하여 협업의 관점을 넓혔습니다.',
     tech: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Docker', 'Jenkins', 'Java 21', 'Spring Boot', 'PostgreSQL'],
