@@ -21,7 +21,7 @@ const timeline: TimelineItem[] = [
     description: '30인 이상 조직 관리 및 대외 커뮤니케이션 경험. 다수 수상으로 책임감과 리더십 입증',
   },
   {
-    period: '2024.04 - 2025.04',
+    period: '2024.04 - 2024.07',
     title: '한국맥도날드 홍보팀 인턴',
     description: '글로벌 기업의 브랜드 커뮤니케이션 실무. 데이터 기반 소통 전략 수립 경험',
   },
@@ -48,14 +48,19 @@ const timeline: TimelineItem[] = [
     ],
   },
   {
-    period: '2026.03',
+    period: '2026.03 - 진행중',
     title: 'JunFlow (개인 프로젝트)',
     description: 'AI 에이전트 오케스트레이션 CLI 도구 설계·구현·npm 배포. Strategy + Factory + Template Method 패턴 실전 적용',
   },
   {
-    period: '2026.03',
+    period: '2026.03 - 진행중',
+    title: '올A+ (개인 프로젝트)',
+    description: '대학생 AI 학습 비서 웹앱. Next.js + Supabase + pgvector RAG 파이프라인, SM-2 플래시카드, 교수 성향 분석 등 9Phase 구현',
+  },
+  {
+    period: '2026.03 - 진행중',
     title: 'AI Sports Camera (개인 프로젝트)',
-    description: 'Android AI 앱 1인 전체 개발. TFLite + MediaPipe 파이프라인, 130개 테스트, GitHub Actions CI/CD',
+    description: 'Android AI 앱 + 커스텀 ML 모델 학습. AI Hub 219만 건 데이터 → 7클래스 분류(F1=0.964) → TFLite 온디바이스 배포',
   },
 ];
 

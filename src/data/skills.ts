@@ -143,13 +143,13 @@ export const skillGroups: SkillGroup[] = [
     skills: [
       {
         name: 'Kotlin',
-        proficiency: 'proficient',
+        proficiency: 'familiar',
         usage: 'AI Sports Camera Android 앱 전체 개발',
         projects: ['aisports'],
       },
       {
         name: 'Jetpack Compose',
-        proficiency: 'proficient',
+        proficiency: 'familiar',
         usage: '선언형 UI 전체 구현, Material3 디자인',
         projects: ['aisports'],
       },
