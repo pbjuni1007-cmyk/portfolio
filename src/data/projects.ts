@@ -148,10 +148,10 @@ export const projects: ProjectData[] = [
       breakdown: 'FE 2 / BE 2 / AI·Infra 1',
       myRole: 'Backend Lead, 아키텍처 설계 주도',
     },
-    contribution: 'Backend Lead — 아키텍처 설계 주도, API 설계 70%',
+    contribution: 'Backend Lead — 아키텍처 설계 주도, API 설계',
     description:
       '동서양 통합 운세 플랫폼. 커스텀 파인튜닝 LLM(Qwen3 4B)이 사주·타로를 AI로 해석하고, 물리 엔진 기반 인터랙티브 카드 경험을 제공합니다.',
-    tech: ['Java 21', 'Spring Boot 3.4', 'Spring Security', 'JPA', 'PostgreSQL', 'Redis', 'Kafka', 'Docker', 'Jenkins'],
+    tech: ['Java 21', 'Spring Boot 3.4', 'Spring Security', 'JPA', 'PostgreSQL', 'Redis', 'Docker', 'Jenkins'],
     highlights: [
       'SSE 기반 AI 운세 실시간 스트리밍 응답 중계 아키텍처 설계',
       'Spring Security + JWT 인증/인가 체계 구현',
@@ -236,7 +236,7 @@ export const projects: ProjectData[] = [
     highlights: [
       'Agent<TInput, TOutput> 제네릭 + Discriminated Union으로 타입 안전한 에이전트 시스템 설계',
       'DAG 위상정렬(Kahn) + 순환감지(DFS)로 태스크 의존성 해결',
-      '멀티모델 라우팅 — 태스크 복잡도별 AI 모델 분리 배정 (비용 최적화)',
+      '멀티모델 라우팅 — 에이전트 타입별 AI 모델 분리 배정 (비용 최적화)',
     ],
     techChoices: [
       {
@@ -264,7 +264,7 @@ export const projects: ProjectData[] = [
       {
         title: '멀티모델 라우팅',
         description:
-          '태스크 복잡도에 따라 Claude Opus/Sonnet/Haiku를 자동 배정. 간단한 작업에 비싼 모델을 쓰지 않도록 비용 최적화.',
+          '에이전트 타입에 따라 Claude Opus/Sonnet/Haiku를 배정. 간단한 작업에 비싼 모델을 쓰지 않도록 비용 최적화.',
       },
       {
         title: 'Strategy + Factory + Template Method 패턴',
@@ -319,9 +319,9 @@ export const projects: ProjectData[] = [
         alternatives: 'Pinecone/Weaviate 대비 인프라 단순화 + RLS로 멀티테넌트 보안',
       },
       {
-        tech: 'Gemini API + raw fetch',
+        tech: 'Gemini API + SDK',
         reason:
-          'SDK 의존성 없이 직접 HTTP 호출로 AI 프로바이더를 추상화. 모델 교체 시 프로바이더 구현체만 변경하면 되는 Factory 패턴 적용.',
+          'Gemini SDK(@google/generative-ai)로 AI 프로바이더를 추상화. 모델 교체 시 프로바이더 구현체만 변경하면 되는 Factory 패턴 적용.',
       },
       {
         tech: 'Next.js 16 + React 19',
@@ -353,7 +353,7 @@ export const projects: ProjectData[] = [
     ],
     performance: [
       { label: '기능 단계', value: '9 Phase', note: 'Foundation → Security 완료' },
-      { label: 'DB 테이블', value: 'RLS 14개', note: '전체 테이블 보안 감사 완료' },
+      { label: 'DB 테이블', value: 'RLS 17개', note: '47개 정책, 전체 테이블 보안 감사 완료' },
       { label: '배포', value: 'Vercel', note: 'all-aplus.vercel.app' },
     ],
     retrospective: {
@@ -386,9 +386,9 @@ export const projects: ProjectData[] = [
       '스포츠 영상에서 AI가 자동으로 베스트 프레임을 추출하는 Android 앱. AI Hub 219만 건 데이터로 커스텀 ML 모델을 직접 학습하고, TFLite로 온디바이스 배포까지 전체 ML 파이프라인을 수행했습니다.',
     tech: ['Kotlin', 'Jetpack Compose', 'TensorFlow Lite', 'MediaPipe', 'Python', 'PyTorch', 'Hilt', 'Room', 'Material3'],
     highlights: [
-      'AI Hub 219만 건 데이터 → 커스텀 1D-CNN 학습 → 7클래스 액션 분류 F1=0.964, TFLite 333KB 온디바이스 배포',
+      'AI Hub 219만 건 데이터 → 커스텀 1D-CNN 학습 → 7클래스 액션 분류 F1=0.843, TFLite 333KB 온디바이스 배포',
       'MediaPipe 33 → AI Hub 16 키포인트 매핑 + 80차원 피처 추출 → 30프레임 슬라이딩 윈도우 실시간 추론',
-      '130개 유닛 테스트 + GitHub Actions CI/CD + Strategy Pattern으로 OCP 실제 적용',
+      '유닛 테스트 + GitHub Actions CI/CD + Strategy Pattern으로 OCP 실제 적용',
     ],
     techChoices: [
       {
@@ -413,7 +413,7 @@ export const projects: ProjectData[] = [
       {
         title: 'ML 모델 학습 — 데이터 수집부터 온디바이스 배포까지',
         description:
-          'AI Hub 축구 동작 데이터 219만 JSON 전처리 → 1D-CNN 분류 모델(7클래스 F1=0.964) + Peak 감지 모델(±3프레임 73%) 학습. YouTube 하이라이트에서 골키퍼 세이브 402시퀀스를 추가 생성하여 데이터 증강. PyTorch → ONNX → TFLite 변환(f16, 333KB)으로 온디바이스 배포.',
+          'AI Hub 축구 동작 데이터 219만 JSON 전처리 → 1D-CNN 분류 모델(7클래스 F1=0.843) + Peak 감지 모델(±3프레임 67%) 학습. YouTube 하이라이트에서 골키퍼 세이브 402시퀀스를 추가 생성하여 데이터 증강. PyTorch → ONNX → TFLite 변환(f16, 333KB)으로 온디바이스 배포.',
       },
       {
         title: '3축 프레임 평가 파이프라인',
@@ -433,16 +433,16 @@ export const projects: ProjectData[] = [
       },
     ],
     performance: [
-      { label: '분류 정확도', value: 'F1 0.964', note: '7클래스 MultiTask 모델' },
-      { label: 'Peak 감지', value: '±3f 73%', note: '1D-CNN regression' },
+      { label: '분류 정확도', value: 'F1 0.843', note: '7클래스 1D-CNN 모델' },
+      { label: 'Peak 감지', value: '±3f 67%', note: '1D-CNN regression' },
       { label: '모델 크기', value: '333KB', note: 'TFLite f16 (분류 199KB + Peak 134KB)' },
-      { label: '테스트', value: '130개', note: '유닛 테스트 + GitHub Actions CI' },
+      { label: '테스트', value: '유닛 테스트', note: 'GitHub Actions CI 연동' },
     ],
     retrospective: {
       lessons: [
         'Pre-trained 모델 의존에서 벗어나 도메인 데이터로 직접 학습 → 정확도와 모델 이해도 동시에 향상',
         '데이터 증강(YouTube → MediaPipe → 학습 시퀀스 자동 생성)으로 부족한 클래스를 보강하는 실전 기법 습득',
-        '130개 테스트가 ML 통합 리팩토링 시 회귀 버그 0건을 보장 — 테스트가 비용이 아닌 투자임을 체감',
+        '테스트가 ML 통합 리팩토링 시 회귀 버그 0건을 보장 — 테스트가 비용이 아닌 투자임을 체감',
         'Strategy Pattern으로 종목 확장 시 기존 코드 변경 0줄 — OCP의 실용적 효과 입증',
       ],
       regrets: [
@@ -471,7 +471,7 @@ export const projects: ProjectData[] = [
     highlights: [
       'v1→v2→v3 기술 스택 3회 전환 — MyBatis→JPA→SQLAlchemy, MySQL→PostgreSQL',
       '첫 협업에서 Git 브랜치 전략을 수립하고 팀 컨벤션 정립',
-      'v2에서 JWT + OAuth2 인증 체계 직접 구현, v3에서 Python async 전환',
+      'v2에서 JWT + OAuth2 인증 체계 직접 구현, v3에서 Python 전환',
     ],
     techChoices: [
       {
@@ -482,7 +482,7 @@ export const projects: ProjectData[] = [
       {
         tech: 'FastAPI + SQLAlchemy 2.0 (v3)',
         reason:
-          'Python 생태계의 AI/ML 라이브러리 활용과 async 지원을 위해 전환. SQLAlchemy 2.0의 async 세션으로 비동기 DB 접근.',
+          'Python 생태계의 AI/ML 라이브러리 활용을 위해 전환. SQLAlchemy 2.0으로 DB 접근, httpx 기반 async HTTP 호출.',
       },
       {
         tech: 'MySQL → PostgreSQL (v3)',
@@ -505,7 +505,7 @@ export const projects: ProjectData[] = [
       {
         title: 'JWT + OAuth2 인증 체계 (v2)',
         description:
-          'v2에서 Spring Security + JWT 기반 인증/인가를 직접 구현. OAuth2 소셜 로그인(Google, Kakao) 통합.',
+          'v2에서 Spring Security + JWT 기반 인증/인가를 직접 구현. OAuth2 소셜 로그인(Google, Facebook) 통합.',
       },
     ],
     performance: [
@@ -554,10 +554,10 @@ export const projects: ProjectData[] = [
       {
         version: 'v3',
         subtitle: '언어 전환 + 비동기',
-        tech: ['Python', 'FastAPI', 'SQLAlchemy 2.0', 'PostgreSQL', 'asyncpg'],
+        tech: ['Python', 'FastAPI', 'SQLAlchemy 2.0', 'PostgreSQL', 'psycopg'],
         changes: [
           'Java → Python 전환 (AI/ML 생태계 활용)',
-          'SQLAlchemy 2.0 async 세션으로 비동기 DB 접근',
+          'SQLAlchemy 2.0으로 DB 접근, httpx 기반 async HTTP 호출',
           'MySQL → PostgreSQL 전환 (pgvector, JSONB 확장성)',
           '종합 코드 개선: 보안 7건, 품질 7건, UX 9건',
         ],

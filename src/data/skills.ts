@@ -126,18 +126,6 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
-    category: 'Messaging',
-    tagStyle: 'ide-tag-purple',
-    skills: [
-      {
-        name: 'Kafka',
-        proficiency: 'familiar',
-        usage: 'YEJI 이벤트 기반 비동기 처리 도입 (AI API 응답 지연 해결)',
-        projects: ['yeji'],
-      },
-    ],
-  },
-  {
     category: 'Mobile',
     tagStyle: 'ide-tag',
     skills: [
