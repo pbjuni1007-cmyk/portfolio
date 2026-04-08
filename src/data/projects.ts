@@ -111,9 +111,9 @@ export const projects: ProjectData[] = [
           'Dev 환경에서 JWT 인증 실패(403) 하나의 증상 뒤에 5개 계층의 원인이 숨어 있었음. Nginx 308 리다이렉트 루프 → Next.js basePath 쿠키 충돌 → Spring Security 설정 → JWT validation 비활성화 → bcrypt 해시 불일치. curl로 레이어별 격리 테스트를 수행하며, 코드만 봐서는 찾을 수 없는 인프라 레이어 문제를 해결.',
       },
       {
-        title: 'MVP 피봇 — 법적 리스크 기반 의사결정',
+        title: 'MVP 피봇 — 5개 에이전트 병렬 딥 리뷰로 법적 리스크 사전 발견',
         description:
-          'CCTV 실시간 분석이 개인정보보호법 제18조(목적 외 이용)에 저촉될 수 있음을 사전 검증하여, 영상 파일 업로드 비동기 분석으로 전환. POS 연동 없이 동작하는 3대 기능(원가분석, 수요예측, 인력가이드)으로 MVP를 재설계.',
+          '구현 시작 전, Architect x2 + Analyst x2 + Document Specialist x1 = 5개 에이전트를 병렬로 돌려 교차 검증. "내부 리뷰는 같은 프레임으로 같은 맹점을 만든다"는 직감에서 출발. CRITICAL 3건을 동시 발견: ①CCTV "목적 외 이용"이 개인정보보호법 제18조에 저촉 가능, ②월 구독료(1~3만원) vs 클라우드 GPU 비용(~70만원) 구조적 적자, ③경쟁사 메이아이(매쉬) 누락. 피봇 결정 — CCTV 의존성 제거, 자체 카메라 + mp4 업로드 구조로 전환 + 엣지 디바이스(Jetson Orin Nano $249) 로드맵 + MVP 3대 기능 재정의(원가분석, 수요예측, 인력가이드). 구현 후 발견이었다면 2~3주 손실.',
       },
     ],
     performance: [
@@ -123,6 +123,8 @@ export const projects: ProjectData[] = [
     ],
     retrospective: {
       lessons: [
+        '"팀장의 가치는 모든 걸 아는 게 아니라 모르는 걸 발견할 체계를 만드는 것" — 5개 에이전트 병렬 교차검증으로 CRITICAL 3건을 구현 전에 잡아냄. 내부 리뷰 혼자였으면 같은 맹점을 계속 봤을 것',
+        '법적 리스크는 엔지니어도 공부해야 한다 — 개인정보보호법 제18조 "목적 외 이용" 조항을 알고 있어야 CCTV 프로젝트의 근본 리스크를 알아챌 수 있음. "변호사한테 물어보면 되지"는 변명',
         'FE를 직접 해보고 깨달은 BE 설계 원칙 — API 계약을 코드(Swagger)로 관리할 것, Security 에러 코드를 세분화할 것(COMMON_001 하나로 퉁치면 FE 디버깅 불가), 로그인 응답에 다음 화면 판단 정보를 포함할 것',
         '단일 403 에러 뒤에 5개 계층(Nginx → Next.js → Spring Security → JWT → bcrypt)의 원인이 있었음 — 코드만 봐서는 원인을 찾을 수 없고, curl로 레이어별 격리 테스트가 필수라는 것을 체득',
         '팀원 간 갈등을 1:1 면담 + 역할 재분배로 해결 — 이후 팀 속도 향상 체감',
@@ -153,9 +155,11 @@ export const projects: ProjectData[] = [
       '동서양 통합 운세 플랫폼. 커스텀 파인튜닝 LLM(Qwen3 4B)이 사주·타로를 AI로 해석하고, 물리 엔진 기반 인터랙티브 카드 경험을 제공합니다.',
     tech: ['Java 21', 'Spring Boot 3.4', 'Spring Security', 'JPA', 'PostgreSQL', 'Redis', 'Docker', 'Jenkins'],
     highlights: [
-      'SSE 기반 AI 운세 실시간 스트리밍 응답 중계 아키텍처 설계',
-      'Spring Security + JWT 인증/인가 체계 구현',
-      '프론트-백 API 명세서 기반 합의 프로세스(Contract-First) 도입',
+      'WebClient + Flux<SSE>로 vLLM 토큰 스트림을 BE→FE 실시간 릴레이 (doOnCancel로 GPU 좀비 요청 차단)',
+      'OAuth2 3-provider(Kakao/Google/Naver)를 OAuth2UserInfo 인터페이스 + Factory로 추상화 — 4번째 provider 추가 시 enum 1줄 + 구현체 1개로 끝',
+      'JWT Access(stateless) + Refresh(Redis 저장) 분리 — 로그아웃 즉시 반영 + Refresh 회전으로 탈취 방어',
+      '12개 도메인 경계 설계 + shop↔wallet↔collection 트랜잭션 일관성 — 외부 호출(AI Server)은 트랜잭션 밖으로',
+      '프론트-백 API 명세서 기반 합의 프로세스(Contract-First) 도입으로 5인 팀 병렬 개발',
     ],
     techChoices: [
       {
@@ -164,23 +168,52 @@ export const projects: ProjectData[] = [
           '사주/타로/궁합 등 복잡한 도메인 모델을 객체 지향적으로 설계. Spring Security로 인증/인가를 통합 관리.',
       },
       {
-        tech: 'PostgreSQL + Redis',
+        tech: 'WebClient + Flux<ServerSentEvent> (vs RestTemplate)',
         reason:
-          '운세 데이터의 관계형 모델링에 PostgreSQL, 세션/캐시에 Redis를 분리하여 응답 속도 최적화.',
-        alternatives: 'MySQL 대비 확장성과 JSON 지원 우위',
+          'vLLM이 토큰 단위로 스트리밍 응답을 뱉는데 RestTemplate은 동기 블로킹이라 전체 응답을 모아야 함. WebClient의 reactive 체인으로 Flux를 받아 Controller에서 그대로 반환 → 토큰 단위로 FE에 흘려보냄. doOnCancel로 FE 이탈 시 AI Server 호출도 자동 취소되어 GPU 좀비 요청 차단.',
+        alternatives: 'SseEmitter(블로킹 스레드 점유) 회피 + @Transactional 밖에서 외부 호출로 DB 커넥션 누수 방지',
       },
       {
-        tech: 'SSE (Server-Sent Events)',
+        tech: 'OAuth2 3-provider 추상화 (Kakao/Google/Naver)',
         reason:
-          'AI 서버(vLLM)의 스트리밍 응답을 클라이언트까지 실시간 전달. WebSocket 대비 단방향 통신에 적합하고 구현 복잡도가 낮음.',
+          'provider별 응답 스키마가 전부 달라 if 분기로 시작했더니 3번째 provider에서 클래스가 터짐. OAuth2UserInfo 인터페이스 + OAuth2UserInfoFactory로 재설계 → 4번째 provider(Apple 등) 추가 시 enum 1줄 + 구현체 1개만 추가, CustomOAuth2UserService는 수정 0.',
+        alternatives: '"확장성"을 말이 아니라 diff로 증명 가능한 구조',
+      },
+      {
+        tech: 'JWT Access/Refresh 분리 + Refresh Redis 회전',
+        reason:
+          'Stateless JWT는 로그아웃 즉시 반영이 어려움. Refresh를 Redis에 refresh:{userId}로 저장하고, 로그아웃은 DEL 1줄로 즉시 무효화. Refresh 회전 시 같은 키를 덮어써서 이전 Refresh 자동 무효. Access TTL은 짧게(1h) 잡아 탈취 피해 범위 제한.',
+        alternatives: 'DB 저장 대비 Redis는 수 ms 응답 + TTL 내장 + 즉시 삭제 단순',
+      },
+      {
+        tech: '12개 도메인 경계 + 트랜잭션 일관성',
+        reason:
+          'BE 2인이 6주에 12개 도메인을 쳐야 해서 첫 주에 패키지 컨벤션을 못 박음 — domain/{name}/{controller,service,repo,entity,dto} + global/external에서만 외부 API 호출. shop→wallet→collection 같은 교차 호출은 동일 @Transactional 범위. AI Server 호출은 트랜잭션 밖(결과 저장만 안쪽)으로 빼서 DB 커넥션 점유 시간 최소화.',
+        alternatives: '트랜잭션 버그 0건 + 머지 충돌 최소화 (같은 파일 동시 수정 방지)',
+      },
+      {
+        tech: 'PostgreSQL + Redis',
+        reason:
+          '운세 데이터의 관계형 모델링에 PostgreSQL, 세션/캐시/Refresh Token에 Redis를 분리하여 응답 속도 최적화.',
+        alternatives: 'MySQL 대비 확장성과 JSONB 지원 우위',
       },
     ],
     features: [
       {
-        title: 'AI 운세 실시간 스트리밍',
+        title: 'vLLM 토큰 스트림 실시간 릴레이 (WebClient + Flux SSE)',
         description:
-          'vLLM 기반 AI 서버의 스트리밍 응답을 SSE로 클라이언트에 중계. 동양 도사와 서양 마법사 캐릭터의 티키타카 형식으로 운세를 실시간 생성.',
+          'AI Server(vLLM)가 토큰을 스트리밍으로 뱉어내는 것을 BE에서 그대로 받아 FE에 흘려보냄. WebClient로 Flux<ServerSentEvent>를 받아 Controller에서 직접 반환 → 토큰 단위로 downstream 전파. doOnCancel 훅으로 FE 이탈 시 AI Server 호출도 동시 취소 → GPU 좀비 요청 차단. 에러는 `event: error` SSE 이벤트로 명시 통지.',
         diagram: '/diagrams/yeji-architecture.svg',
+      },
+      {
+        title: 'OAuth2 3-provider 추상화 + JWT Refresh Redis 회전',
+        description:
+          'Kakao/Google/Naver 응답 스키마가 전부 달라 OAuth2UserInfo 인터페이스 + Factory 패턴으로 재설계. 4번째 provider 추가 시 enum 1줄 + 구현체 1개로 확장 가능. JWT는 Access(stateless, 1h) + Refresh(Redis 저장) 분리 → 로그아웃은 Redis DEL 1줄로 즉시 반영, Refresh 회전으로 탈취 방어.',
+      },
+      {
+        title: '12개 도메인 경계 설계 + 트랜잭션 일관성',
+        description:
+          'BE 2인이 6주에 12개 도메인(user/saju/unse/card/collection/compatibility/friend/event/luck/session/shop/wallet)을 쳐야 해서 첫 주에 패키지 컨벤션을 못 박음. shop→wallet→collection 같은 교차 호출은 동일 @Transactional 범위로 묶어 트랜잭션 버그 0건. 외부 호출(AI Server)은 트랜잭션 밖으로 빼서 DB 커넥션 점유 시간 최소화.',
       },
       {
         title: 'JSONB 기반 유연한 데이터 모델',
@@ -191,31 +224,35 @@ export const projects: ProjectData[] = [
       {
         title: 'Contract-First API 협업',
         description:
-          'API 명세서를 먼저 합의한 뒤 프론트/백이 병렬 개발. 인터페이스 불일치로 인한 재작업을 제거하고 개발 속도 향상.',
+          'API 명세서를 먼저 합의한 뒤 프론트/백이 병렬 개발. 인터페이스 불일치로 인한 재작업을 제거하고 5인 팀 개발 속도 향상.',
       },
       {
-        title: '인증/인가 + 소셜 기능',
+        title: '8라운드 257건 체계적 코드 리뷰 + 공개 아카이브',
         description:
-          'Spring Security + JWT 기반 인증 체계 위에, 축복/저주 교환, 캐릭터 상점, 친구 시스템 등 소셜 게이미피케이션 기능의 백엔드 API 구현.',
+          '아키텍처/보안/품질/성능/타입안전성/버그를 R1~R8 8라운드로 분리 수행. BE 103건 + AI Server 130건 + Frontend 24건 = 257건의 이슈를 ID 체계(BE-R2-SEC-001 형식)로 추적. 결과는 별도 yeji-code-review 리포지토리에 통합본 + 개별본 + 방법론 3층 구조로 공개 아카이브 → 면접에서 URL로 즉시 증명 가능.',
       },
     ],
     performance: [
       { label: 'API 설계', value: 'Contract-First', note: '프론트-백 병렬 개발' },
-      { label: '코드 리뷰', value: '7라운드 249건', note: 'CRITICAL 26, HIGH 72' },
+      { label: '코드 리뷰', value: '8라운드 257건', note: 'CRITICAL 33, HIGH 103' },
+      { label: '도메인', value: '12개', note: 'BE 2인이 6주에 완주' },
     ],
     retrospective: {
       lessons: [
         'Contract-First 방식이 5인 팀에서 병렬 개발 효율을 크게 높임 — 명세 합의에 1일 투자해서 재작업 절약',
-        'SSE 기반 스트리밍 아키텍처 설계로 실시간 AI 응답의 UX를 크게 개선',
-        '7라운드 249건의 체계적 코드 리뷰 프로세스를 경험하며 코드 품질 관리 역량 향상',
+        'WebClient + Flux SSE로 "비동기 + 스트리밍 + 자원정리" 3박자를 처음부터 reactive 체인으로 설계 — RestTemplate 마인드로는 스트리밍 자원 누수 필연',
+        '외부 호출은 트랜잭션 밖이 원칙 — @Transactional 안에서 WebClient 호출하면 HTTP 대기 동안 DB 커넥션 점유 → 동시 요청 증가 시 커넥션 풀 고갈',
+        '"확장성"은 말이 아니라 diff로 증명 — OAuth2 3-provider 추상화는 4번째 provider 추가를 시뮬레이션해서 enum 1줄 + 구현체 1개 diff로 보여줄 수 있어야 진짜',
+        '도메인 경계는 "용어부터"가 아니라 "사용자 시나리오 → 트랜잭션 경계 → 도메인 분해" 순서로 잡아야 일관적',
+        '8라운드 257건 체계적 코드 리뷰 + 공개 아카이브 — "코드 품질 어떻게 챙기셨나요?" 질문에 URL로 답할 수 있는 구조',
       ],
       regrets: [
-        'Redis 캐싱 전략을 초기 설계 시점에 더 체계적으로 수립했으면 좋았을 것',
-        'AI 서버와의 통신 에러 핸들링을 더 촘촘하게 설계했으면 안정성이 높아졌을 것',
+        'Redis 캐싱 전략을 초기 설계 시점에 더 체계적으로 수립했으면 좋았을 것 (사주는 생년월일시 결정론적이라 공격적 캐싱 가능)',
+        'WebClient retry/Circuit Breaker 정책을 처음부터 넣었으면 AI Server 장애 시 graceful degradation 가능',
       ],
       improvements: [
         'Circuit Breaker 패턴으로 AI 서버 장애 시 graceful degradation 구현',
-        '캐싱 전략 문서화 — 어떤 데이터를 얼마나 캐싱할지 사전 정의',
+        '사주 결과 Redis 캐싱 — 키 `saju:{년월일시:성별}`, TTL 30일로 AI Server 호출 비용 절감',
       ],
     },
     github: 'https://github.com/yeji-service',
@@ -235,8 +272,10 @@ export const projects: ProjectData[] = [
     tech: ['TypeScript', 'Node.js', 'Zod', 'MCP', 'Claude API', 'npm'],
     highlights: [
       'Agent<TInput, TOutput> 제네릭 + Discriminated Union으로 타입 안전한 에이전트 시스템 설계',
-      'DAG 위상정렬(Kahn) + 순환감지(DFS)로 태스크 의존성 해결',
-      '멀티모델 라우팅 — 에이전트 타입별 AI 모델 분리 배정 (비용 최적화)',
+      'v0.4 Phase 1~4 완료 — DAG Runner, Light/Deep 스킬 분리, 외부 CLI 워커 통합(CliRunner + Tier 감지), CI/CD 네이티브 모드, 비용 대시보드',
+      'ConsensusRunner + Verifier — 멀티 프로바이더(Claude/OpenAI/Gemini) 병렬 실행 + 합성 + 품질 검증 재시도',
+      'DAG 위상정렬(Kahn) + 순환감지(DFS)로 태스크 의존성 해결, onProgress / AbortController / maxRetries 지원',
+      'npm 공개 배포(v0.3.1) + 648 tests / 58 test files',
     ],
     techChoices: [
       {
@@ -245,9 +284,15 @@ export const projects: ProjectData[] = [
           'AI 에이전트의 입출력 타입이 복잡하고 다양함. 제네릭과 Discriminated Union으로 컴파일 타임에 타입 오류를 잡아 런타임 버그를 예방.',
       },
       {
-        tech: 'Zod',
+        tech: 'Zod + Consensus + Verifier',
         reason:
-          'LLM 응답은 예측 불가. Zod 스키마로 런타임에 응답 구조를 검증하고, 검증 실패 시 재시도 로직으로 안정성 확보.',
+          'LLM 응답은 예측 불가. Zod 스키마로 런타임에 응답 구조를 검증하고, 검증 실패 시 재시도. 더 중요한 태스크는 ConsensusRunner로 멀티 프로바이더 병렬 실행 + 합성, Verifier로 품질 검증 + 재시도 루프를 돌려 신뢰도 확보.',
+        alternatives: '단일 프로바이더 의존 제거 → Claude/OpenAI/Gemini 상호 교차검증',
+      },
+      {
+        tech: 'CliRunner + Tier 감지',
+        reason:
+          '외부 CLI 워커(codex, gemini 등)를 child_process.spawn 래핑으로 오케스트레이션. TierManager가 설치된 CLI를 감지해 FULL/PARTIAL/MINIMAL 모드 자동 선택. DAG 프리셋에서 `CliWorker:codex:review code` 접두사로 네이티브 에이전트와 혼합 실행.',
       },
       {
         tech: 'MCP 프로토콜',
@@ -257,24 +302,35 @@ export const projects: ProjectData[] = [
     ],
     features: [
       {
-        title: 'DAG 위상정렬 기반 태스크 실행',
+        title: 'DAG 위상정렬 기반 태스크 실행 (Phase 3 강화)',
         description:
-          'Kahn 알고리즘으로 태스크 의존성을 해결하고 병렬 실행 가능한 태스크를 자동 식별. DFS 기반 순환 감지로 무한루프 방지.',
+          'Kahn 알고리즘으로 태스크 의존성을 해결하고 병렬 실행 가능한 태스크를 자동 식별. DFS 기반 순환 감지로 무한루프 방지. v0.4 Phase 3에서 onProgress 콜백, AbortController 취소, maxRetries 재시도, CLI 워커 혼합 실행까지 강화.',
       },
       {
-        title: '멀티모델 라우팅',
+        title: 'ConsensusRunner + Verifier (멀티 프로바이더 교차검증)',
         description:
-          '에이전트 타입에 따라 Claude Opus/Sonnet/Haiku를 배정. 간단한 작업에 비싼 모델을 쓰지 않도록 비용 최적화.',
+          'Claude/OpenAI/Gemini 3개 프로바이더를 병렬 실행하여 결과를 합성(Consensus). 검증자(Verifier)가 품질을 체크하고 실패 시 재시도 루프. 단일 프로바이더 환각을 상호 교차검증으로 차단. commit/review/review-doc 명령에 --consensus / --verify 옵션으로 노출.',
       },
       {
-        title: 'Strategy + Factory + Template Method 패턴',
+        title: 'CI/CD 네이티브 모드 (v0.4 Phase 4)',
         description:
-          '3개 AI 프로바이더와 3개 트래커를 플러그인 방식으로 확장. 새 AI 모델이나 트래커 추가 시 기존 코드 수정 없이 구현체만 추가.',
+          '6개 CI 프로바이더(GitHub Actions/GitLab CI/Jenkins/CircleCI/Travis/Drone) 자동 감지. --ci 플래그 없이도 CI 환경변수만으로 활성화. JSON / GitHub PR 코멘트 / GitLab MR 코멘트 3가지 포맷터 지원. commit --ci는 첫 번째 추천 자동 선택 (interactive 비활성).',
+      },
+      {
+        title: '비용 대시보드 (v0.4 Phase 4)',
+        description:
+          '10개 AI 모델의 input/output 토큰 단가 테이블 내장. 모든 에이전트 호출에 model 필드 추적 + 비용 계산. junflow status --cost로 실시간 비용 테이블, --history로 세션 비용 추이 bar chart 출력.',
+      },
+      {
+        title: 'Claude Code 스킬 시스템 (직접 실행 방식)',
+        description:
+          'junflow-commit/review/start/status/deep-review/deep-commit/plan/autopilot 8개 스킬을 Claude Code 내부에서 직접 실행. 별도 API 키 불필요. SKILL.md triggers 필드로 자연어 매칭 활성화.',
       },
     ],
     performance: [
-      { label: 'npm 배포', value: '공개 배포', note: 'npmjs.com/package/junflow' },
-      { label: '디자인 패턴', value: '3개 적용', note: 'Strategy, Factory, Template Method' },
+      { label: 'npm 배포', value: 'v0.3.1', note: 'npmjs.com/package/junflow' },
+      { label: '테스트 성장', value: '191→648', note: 'MVP→Phase 4 (+457)' },
+      { label: '개발 Phase', value: 'v0.4 P1~4', note: 'DAG/스킬/CLI워커/CI+비용' },
     ],
     retrospective: {
       lessons: [
@@ -386,7 +442,9 @@ export const projects: ProjectData[] = [
       '스포츠 영상에서 AI가 자동으로 베스트 프레임을 추출하는 Android 앱. AI Hub 219만 건 데이터로 커스텀 ML 모델을 직접 학습하고, TFLite로 온디바이스 배포까지 전체 ML 파이프라인을 수행했습니다.',
     tech: ['Kotlin', 'Jetpack Compose', 'TensorFlow Lite', 'MediaPipe', 'Python', 'PyTorch', 'Hilt', 'Room', 'Material3'],
     highlights: [
-      'AI Hub 219만 건 데이터 → 커스텀 1D-CNN 학습 → 7클래스 액션 분류 F1=0.843, TFLite 333KB 온디바이스 배포',
+      'AI Hub 219만 건 데이터 → 커스텀 1D-CNN 학습 → 초기 F1=0.843 → 실험 반복으로 **MultiTask F1=0.964까지 개선**, TFLite 333KB 온디바이스 배포',
+      'Peak 감지 모델도 초기 ±3f 67% → combined feature 적용 후 **±3f 73.0%로 개선**',
+      '7클래스 재학습(골키퍼 SAVE 추가, YouTube 데이터 증강 402 시퀀스) → **Test Acc 95.01% 달성**',
       'MediaPipe 33 → AI Hub 16 키포인트 매핑 + 80차원 피처 추출 → 30프레임 슬라이딩 윈도우 실시간 추론',
       '유닛 테스트 + GitHub Actions CI/CD + Strategy Pattern으로 OCP 실제 적용',
     ],
@@ -411,9 +469,9 @@ export const projects: ProjectData[] = [
     ],
     features: [
       {
-        title: 'ML 모델 학습 — 데이터 수집부터 온디바이스 배포까지',
+        title: 'ML 모델 학습 — 7개 실험 반복으로 성능 개선',
         description:
-          'AI Hub 축구 동작 데이터 219만 JSON 전처리 → 1D-CNN 분류 모델(7클래스 F1=0.843) + Peak 감지 모델(±3프레임 67%) 학습. YouTube 하이라이트에서 골키퍼 세이브 402시퀀스를 추가 생성하여 데이터 증강. PyTorch → ONNX → TFLite 변환(f16, 333KB)으로 온디바이스 배포.',
+          'AI Hub 축구 동작 데이터 219만 JSON 전처리 → 1D-CNN 분류 모델 학습. Exp-1 baseline F1=0.843에서 시작 → bio/combined/multitask 7개 실험을 거쳐 **Exp-4 MultiTask F1=0.964까지 개선**. Peak 감지도 Exp-1 ±3f 67% → **Exp-7 combined ±3f 73.0%**. YouTube 하이라이트에서 골키퍼 세이브 402시퀀스를 추가 생성(데이터 증강) → 7클래스 재학습으로 **Test Acc 95.01% 달성**. PyTorch → ONNX → TFLite 변환(f16, 333KB)으로 온디바이스 배포.',
       },
       {
         title: '3축 프레임 평가 파이프라인',
@@ -433,10 +491,10 @@ export const projects: ProjectData[] = [
       },
     ],
     performance: [
-      { label: '분류 정확도', value: 'F1 0.843', note: '7클래스 1D-CNN 모델' },
-      { label: 'Peak 감지', value: '±3f 67%', note: '1D-CNN regression' },
+      { label: '분류 정확도', value: 'F1 0.964', note: 'MultiTask (초기 0.843 → 개선)' },
+      { label: '재학습 Acc', value: '95.01%', note: '7클래스 (SAVE 추가 + 데이터 증강)' },
+      { label: 'Peak 감지', value: '±3f 73%', note: 'Combined (초기 67% → 개선)' },
       { label: '모델 크기', value: '333KB', note: 'TFLite f16 (분류 199KB + Peak 134KB)' },
-      { label: '테스트', value: '유닛 테스트', note: 'GitHub Actions CI 연동' },
     ],
     retrospective: {
       lessons: [

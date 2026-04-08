@@ -36,8 +36,8 @@ export const skillGroups: SkillGroup[] = [
       {
         name: 'Java',
         proficiency: 'core',
-        usage: 'Spring Boot 기반 백엔드 전 프로젝트 담당',
-        projects: ['yeji', 'golmok', 'seoulmate'],
+        usage: 'YEJI/SeoulMate 백엔드 개발 — Spring Boot, JPA, Spring Security',
+        projects: ['yeji', 'seoulmate'],
       },
       {
         name: 'Spring Boot',
