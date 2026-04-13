@@ -50,7 +50,7 @@ const timeline: TimelineItem[] = [
   {
     period: '2026.03 - 진행중',
     title: 'JunFlow (개인 프로젝트)',
-    description: 'AI 에이전트 오케스트레이션 CLI 도구 설계·구현·npm 배포. Strategy + Factory + Template Method 패턴 실전 적용',
+    description: 'AI 에이전트 오케스트레이션 CLI 도구. v0.5.0에서 MCP 기반으로 전면 리팩터링(이중 호출 문제 해결), v0.6.0에서 멀티 CLI(Claude+Codex+Gemini) 오케스트레이션 추가. 12개 MCP 도구 + 8개 스킬 + npm 배포',
   },
   {
     period: '2026.03 - 진행중',

@@ -26,6 +26,7 @@ export const projectNameMap: Record<string, string> = {
   junflow: 'JunFlow',
   aisports: 'AI Sports',
   seoulmate: 'SeoulMate',
+  allaplus: '올A+',
 };
 
 export const skillGroups: SkillGroup[] = [
@@ -156,14 +157,14 @@ export const skillGroups: SkillGroup[] = [
       {
         name: 'TypeScript',
         proficiency: 'proficient',
-        usage: 'JunFlow 전체, 포트폴리오 사이트',
-        projects: ['junflow'],
+        usage: 'JunFlow 전체, 올A+ 풀스택, 포트폴리오 사이트',
+        projects: ['junflow', 'allaplus'],
       },
       {
         name: 'React / Next.js',
         proficiency: 'familiar',
-        usage: '골목식당 FE 개발, 포트폴리오 사이트',
-        projects: ['golmok'],
+        usage: '골목식당 FE 개발, 올A+ 풀스택, 포트폴리오 사이트',
+        projects: ['golmok', 'allaplus'],
       },
       {
         name: 'Vue.js',
@@ -174,8 +175,8 @@ export const skillGroups: SkillGroup[] = [
       {
         name: 'Tailwind CSS',
         proficiency: 'familiar',
-        usage: '유틸리티 기반 스타일링, 골목식당 FE',
-        projects: ['golmok'],
+        usage: '유틸리티 기반 스타일링, 골목식당·올A+ FE',
+        projects: ['golmok', 'allaplus'],
       },
     ],
   },
@@ -184,21 +185,27 @@ export const skillGroups: SkillGroup[] = [
     tagStyle: 'ide-tag-purple',
     skills: [
       {
-        name: 'Claude API',
-        proficiency: 'proficient',
-        usage: 'JunFlow 멀티모델 라우팅',
+        name: 'MCP',
+        proficiency: 'core',
+        usage: 'JunFlow MCP 서버 12개 도구 직접 구현 + 멀티 CLI 오케스트레이션',
         projects: ['junflow'],
       },
       {
-        name: 'MCP',
+        name: 'AI Tooling',
         proficiency: 'proficient',
-        usage: 'JunFlow MCP 서버 직접 구현',
+        usage: 'SKILL.md 시스템 설계, Claude+Codex+Gemini 역할 분배 워크플로우 구축',
         projects: ['junflow'],
+      },
+      {
+        name: 'Gemini API',
+        proficiency: 'familiar',
+        usage: '올A+ AI 프로바이더 — Factory 패턴으로 추상화, RAG 파이프라인 연동',
+        projects: ['allaplus'],
       },
       {
         name: 'Node.js CLI',
         proficiency: 'proficient',
-        usage: 'CLI 도구 설계·npm 배포',
+        usage: 'MCP 서버 + CLI 오케스트레이터 설계·npm 배포',
         projects: ['junflow'],
       },
     ],

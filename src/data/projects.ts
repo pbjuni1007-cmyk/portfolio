@@ -268,81 +268,77 @@ export const projects: ProjectData[] = [
     },
     contribution: '1인 설계~배포 100%',
     description:
-      'AI 에이전트를 오케스트레이션하는 개발자 워크플로우 CLI 도구. AI를 사용하는 것을 넘어, AI 도구를 직접 설계하고 npm에 배포했습니다.',
-    tech: ['TypeScript', 'Node.js', 'Zod', 'MCP', 'Claude API', 'npm'],
+      'AI 에이전트를 오케스트레이션하는 개발자 워크플로우 CLI 도구. v0.5.0에서 "AI가 AI를 호출하는" 이중 호출 문제를 근본 해결하기 위해 MCP 프로토콜 기반으로 전면 리팩터링했고, v0.6.0에서 멀티 CLI(Claude+Codex+Gemini) 오케스트레이션을 추가했습니다.',
+    tech: ['TypeScript', 'Node.js', 'MCP', 'Zod', 'simple-git', 'npm'],
     highlights: [
-      'Agent<TInput, TOutput> 제네릭 + Discriminated Union으로 타입 안전한 에이전트 시스템 설계',
-      'v0.4 Phase 1~4 완료 — DAG Runner, Light/Deep 스킬 분리, 외부 CLI 워커 통합(CliRunner + Tier 감지), CI/CD 네이티브 모드, 비용 대시보드',
-      'ConsensusRunner + Verifier — 멀티 프로바이더(Claude/OpenAI/Gemini) 병렬 실행 + 합성 + 품질 검증 재시도',
-      'DAG 위상정렬(Kahn) + 순환감지(DFS)로 태스크 의존성 해결, onProgress / AbortController / maxRetries 지원',
-      'npm 공개 배포(v0.3.1) + 648 tests / 58 test files',
+      'v0.5.0 아키텍처 대수술 — AI API 직접 호출(이중 호출 문제) 제거, MCP 프로토콜 기반으로 전환. AI SDK 의존성 3개 완전 삭제',
+      '12개 MCP 도구 직접 구현 — context 수집(5) + action 실행(4) + CLI 오케스트레이션(3)',
+      'v0.6.0 멀티 CLI 오케스트레이션 — Claude=오케스트레이터, Codex=구현, Gemini=서치/디자인 역할 분배',
+      '8개 SKILL.md 시스템 — Claude Code 내부에서 도메인 지식을 주입하여 직접 실행, API 키 불필요',
+      'npm 공개 배포(v0.5.0) + 314 tests / 27 test files',
     ],
     techChoices: [
       {
-        tech: 'TypeScript',
+        tech: 'MCP 프로토콜 (vs AI API 직접 호출)',
         reason:
-          'AI 에이전트의 입출력 타입이 복잡하고 다양함. 제네릭과 Discriminated Union으로 컴파일 타임에 타입 오류를 잡아 런타임 버그를 예방.',
+          'v0.4까지 JunFlow가 Claude/OpenAI/Gemini API를 직접 호출했는데, Claude Code 안에서 실행하면 "AI가 AI를 호출하는" 이중 호출 문제 발생. MCP 표준으로 역할을 분리 — AI 추론은 Claude Code, context 수집과 action 실행은 JunFlow. @anthropic-ai/sdk, openai, @google/generative-ai 의존성 3개를 완전 제거.',
+        alternatives: '"더 좋은 코드를 쓰는 것보다 불필요한 코드를 지우는 것이 더 어렵다" — 코드 절반 이상 삭제',
       },
       {
-        tech: 'Zod + Consensus + Verifier',
+        tech: 'TypeScript + Zod 스키마 검증',
         reason:
-          'LLM 응답은 예측 불가. Zod 스키마로 런타임에 응답 구조를 검증하고, 검증 실패 시 재시도. 더 중요한 태스크는 ConsensusRunner로 멀티 프로바이더 병렬 실행 + 합성, Verifier로 품질 검증 + 재시도 루프를 돌려 신뢰도 확보.',
-        alternatives: '단일 프로바이더 의존 제거 → Claude/OpenAI/Gemini 상호 교차검증',
+          'MCP 도구 입력을 Zod 스키마로 정의하여 타입 안전성 + 런타임 검증을 동시에 달성. YAML 설정 파일도 Zod 스키마로 검증하여 잘못된 설정을 즉시 감지.',
       },
       {
-        tech: 'CliRunner + Tier 감지',
+        tech: 'CLI 오케스트레이션 (child_process.spawn)',
         reason:
-          '외부 CLI 워커(codex, gemini 등)를 child_process.spawn 래핑으로 오케스트레이션. TierManager가 설치된 CLI를 감지해 FULL/PARTIAL/MINIMAL 모드 자동 선택. DAG 프리셋에서 `CliWorker:codex:review code` 접두사로 네이티브 에이전트와 혼합 실행.',
+          'Codex/Gemini CLI를 headless로 스폰하여 역할별 분배. junflow_run_consensus로 병렬 실행 후 결과를 묶어 반환. outputMaxBytes(50KB), defaultTimeout(300s) 제한으로 자원 관리.',
       },
       {
-        tech: 'MCP 프로토콜',
+        tech: 'SKILL.md 시스템',
         reason:
-          'Claude Code와 같은 AI 도구에서 JunFlow를 직접 호출할 수 있도록 MCP 서버를 직접 구현. 표준 프로토콜로 도구 간 상호운용성 확보.',
+          '커밋 컨벤션, 리뷰 관점, 이슈 분석 등 도메인 지식을 마크다운 파일로 내장. Claude Code가 triggers 필드로 자연어 매칭하여 자동 활성화. 별도 API 키 없이 Claude Code 내부에서 직접 실행.',
       },
     ],
     features: [
       {
-        title: 'DAG 위상정렬 기반 태스크 실행 (Phase 3 강화)',
+        title: 'MCP 서버 — 12개 도구 직접 구현',
         description:
-          'Kahn 알고리즘으로 태스크 의존성을 해결하고 병렬 실행 가능한 태스크를 자동 식별. DFS 기반 순환 감지로 무한루프 방지. v0.4 Phase 3에서 onProgress 콜백, AbortController 취소, maxRetries 재시도, CLI 워커 혼합 실행까지 강화.',
+          'Context 수집 5개(staged diff, branch diff, issue 조회, git 상태, 컨벤션) + Action 실행 4개(branch 생성, commit, status, session 기록) + CLI 오케스트레이션 3개(Codex/Gemini 실행, consensus, 잡 상태 조회). Claude Code가 MCP 프로토콜로 호출하여 AI 추론과 도구 실행을 깔끔하게 분리.',
       },
       {
-        title: 'ConsensusRunner + Verifier (멀티 프로바이더 교차검증)',
+        title: 'v0.5.0 아키텍처 대수술 — "이중 호출" 근본 해결',
         description:
-          'Claude/OpenAI/Gemini 3개 프로바이더를 병렬 실행하여 결과를 합성(Consensus). 검증자(Verifier)가 품질을 체크하고 실패 시 재시도 루프. 단일 프로바이더 환각을 상호 교차검증으로 차단. commit/review/review-doc 명령에 --consensus / --verify 옵션으로 노출.',
+          '제거: src/ai/(AI 프로바이더 3개), src/agents/(12개 에이전트), src/orchestrator/, src/teams/, src/modes/ + AI SDK 의존성 3개. 유지: git 조작, 이슈 트래커(Notion/GitHub/Jira/Mock), 세션 관리, DAG, 훅, 설정 — AI 의존성 없는 순수 도구 레이어만 남김.',
       },
       {
-        title: 'CI/CD 네이티브 모드 (v0.4 Phase 4)',
+        title: '멀티 CLI 오케스트레이션 (v0.6.0)',
         description:
-          '6개 CI 프로바이더(GitHub Actions/GitLab CI/Jenkins/CircleCI/Travis/Drone) 자동 감지. --ci 플래그 없이도 CI 환경변수만으로 활성화. JSON / GitHub PR 코멘트 / GitLab MR 코멘트 3가지 포맷터 지원. commit --ci는 첫 번째 추천 자동 선택 (interactive 비활성).',
+          'junflow_run_cli로 Codex/Gemini를 동기/비동기 headless 실행. junflow_run_consensus로 두 CLI를 병렬 실행하여 결과를 합산. 역할→CLI→프로파일 매핑을 설정 파일로 관리. Claude=오케스트레이터, Codex=구현, Gemini=서치/디자인.',
       },
       {
-        title: '비용 대시보드 (v0.4 Phase 4)',
+        title: '8개 SKILL.md — 도메인 지식 내장 스킬',
         description:
-          '10개 AI 모델의 input/output 토큰 단가 테이블 내장. 모든 에이전트 호출에 model 필드 추적 + 비용 계산. junflow status --cost로 실시간 비용 테이블, --history로 세션 비용 추이 bar chart 출력.',
-      },
-      {
-        title: 'Claude Code 스킬 시스템 (직접 실행 방식)',
-        description:
-          'junflow-commit/review/start/status/deep-review/deep-commit/plan/autopilot 8개 스킬을 Claude Code 내부에서 직접 실행. 별도 API 키 불필요. SKILL.md triggers 필드로 자연어 매칭 활성화.',
+          'commit, review, start, status, autopilot, deep-review, deep-commit, plan 8개 스킬. 각 스킬이 MCP 도구를 호출하여 context를 수집하고, Claude Code의 AI 추론으로 결과를 생성. "jf c" 같은 축약 트리거로 빠르게 활성화.',
       },
     ],
     performance: [
-      { label: 'npm 배포', value: 'v0.3.1', note: 'npmjs.com/package/junflow' },
-      { label: '테스트 성장', value: '191→648', note: 'MVP→Phase 4 (+457)' },
-      { label: '개발 Phase', value: 'v0.4 P1~4', note: 'DAG/스킬/CLI워커/CI+비용' },
+      { label: 'npm 배포', value: 'v0.5.0', note: 'npmjs.com/package/junflow' },
+      { label: 'MCP 도구', value: '12개', note: 'context 5 + action 4 + CLI 3' },
+      { label: '테스트', value: '314 tests', note: '27 test files' },
     ],
     retrospective: {
       lessons: [
-        '디자인 패턴을 "교과서 예제"가 아닌 실제 문제에 적용해보니 확장성의 가치를 체감',
-        'npm 배포 과정에서 패키지 번들링, 진입점 설정, 버전 관리 등 오픈소스 생태계의 실무를 학습',
-        'MCP 프로토콜 직접 구현으로 "AI 도구를 사용하는 개발자"에서 "AI 도구를 만드는 개발자"로 시야 확장',
+        '"AI를 사용하는 도구"에서 "AI와 협업하는 도구"로 패러다임 전환 — MCP로 역할 분리하니 이중 호출 문제가 근본적으로 해소',
+        'v0.5.0에서 코드의 절반 이상을 삭제 — "더 좋은 코드를 쓰는 것보다 불필요한 코드를 지우는 것이 더 어렵다"를 체감. 삭제: AI 프로바이더 3개, 에이전트 12개, 오케스트레이터, 팀, 실행 모드',
+        'npm 배포 + MCP 프로토콜 구현으로 "AI 도구를 사용하는 개발자"에서 "AI 도구를 설계하는 개발자"로 시야 확장',
+        '멀티 CLI 오케스트레이션(v0.6.0)으로 각 AI의 강점을 역할별로 분배하는 실전 경험 — Claude=추론, Codex=구현, Gemini=검색/디자인',
       ],
       regrets: [
-        '테스트 커버리지를 더 높였으면 리팩토링 시 안심할 수 있었을 것',
+        'v0.4까지 AI API 직접 호출 구조의 문제를 더 일찍 의심했으면 이중 호출 문제를 빨리 해결했을 것',
       ],
       improvements: [
-        'E2E 테스트 추가로 전체 파이프라인 검증 자동화',
+        'E2E 테스트 추가로 MCP 도구 → CLI 오케스트레이션 전체 파이프라인 검증',
         'GitHub Actions CI에서 npm publish 자동화',
       ],
     },
